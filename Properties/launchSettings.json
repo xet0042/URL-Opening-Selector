@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "URL Opening Selector (Package)": {
+      "commandName": "MsixPackage",
+      "alwaysReinstallApp": true
+    },
+    "URL Opening Selector (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

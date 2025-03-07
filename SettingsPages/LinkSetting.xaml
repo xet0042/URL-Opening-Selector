@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Page
+    x:Class="URL_Opening_Selector.SettingsPages.LinkSetting"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:URL_Opening_Selector.SettingsPages"
+    xmlns:global="using:URL_Opening_Selector"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="4">
+        <controls:SettingsCard Header="默认浏览器"
+                               Description="打开此链接时使用的浏览器"
+                               HeaderIcon="{ui:FontIcon Glyph=&#xF6FA;}">
+            <ComboBox x:Name="ComboBox1"
+                      SelectionChanged="Selector_OnSelectionChanged" />
+        </controls:SettingsCard>
+        <controls:SettingsCard Header="处理方式"
+                               Description="当链接被打开时处理的方式"
+                               HeaderIcon="{ui:FontIcon Glyph=&#xE7AC;}">
+            <ComboBox x:Name="ComboBox2"
+                      SelectionChanged="ComboBox2_OnSelectionChanged">
+                <TextBlock Text="弹窗询问" Tag="Inquire" />
+                <TextBlock Text="直接启动" Tag="Open" />
+                <TextBlock Text="无所事事" Tag="None" />
+            </ComboBox>
+        </controls:SettingsCard>
+    </StackPanel>
+</Page>
