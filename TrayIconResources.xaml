@@ -92,6 +92,7 @@
         x:Key="TrayIcon"
         Visibility="Visible"
         ToolTipText="Application"
+        IconSource="ms-appx:///Assets/StoreLogo.png"
         ContextMenuMode="SecondWindow">
         <tb:TaskbarIcon.ContextFlyout>
             <MenuFlyout>

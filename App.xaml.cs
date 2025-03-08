@@ -10,6 +10,9 @@ using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Activation;
 using AppInstance = Microsoft.Windows.AppLifecycle.AppInstance;
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System.IO;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -71,6 +74,10 @@ namespace URL_Opening_Selector
                 }
             };
             var trayIcon = (Resources["TrayIcon"] as H.NotifyIcon.TaskbarIcon)!;
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var iconPath = Path.Combine(basePath, "Assets", "TrayIcon.ico");
+            trayIcon.IconSource = new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
+            trayIcon.Icon = new System.Drawing.Icon(iconPath);
             trayIcon.ForceCreate();
             TrayIcon = trayIcon;
             Globals.Initialed = true;
