@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+
 namespace URL_Opening_Selector
 {
     public class AppConfiguration
