@@ -59,8 +59,8 @@ namespace URL_Opening_Selector
             if (PatternExist)
                 ComboBox1.SelectedItem = UrlPattern.Browser;
             else
-                ComboBox1.SelectedItem = Globals.AppConfiguration.Configuration.DefaultBrowser;
-            OkButton.IsEnabled = Globals.AppConfiguration.Configuration.DefaultBrowser is not null;
+                ComboBox1.SelectedItem = Globals.AppConfiguration.Configuration.DefaultSettings.Browser;
+            OkButton.IsEnabled = !string.IsNullOrEmpty(Globals.AppConfiguration.Configuration.DefaultSettings.Browser);
         }
 
         private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
@@ -68,8 +68,8 @@ namespace URL_Opening_Selector
             if (CheckBox1.IsChecked ?? false)
                 await Globals.AppConfiguration.AddUrlPattern(Pattern, (string)ComboBox1.SelectedItem,
                     UrlPatternMethod.Open);
-            Util.UrlStartWith(Url,
-                Globals.AppConfiguration.Configuration.Browsers.First(b => b.Name == (string)ComboBox1.SelectedItem).Path);
+            UrlPattern.Browser = (string)ComboBox1.SelectedItem;
+            Util.UrlStartWith(Url, UrlPattern);
             Close();
         }
 

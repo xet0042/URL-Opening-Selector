@@ -124,9 +124,7 @@ namespace URL_Opening_Selector
                             ShowDialog(p.Pattern, true, p);
                             return;
                         case UrlPatternMethod.Open:
-                            Util.UrlStartWith(uri,
-                                Globals.AppConfiguration.Configuration.Browsers.First(b => b.Name == p.Browser).Path
-                            );
+                            Util.UrlStartWith(uri, p);
                             return;
                         case UrlPatternMethod.None:
                             return;
@@ -136,17 +134,13 @@ namespace URL_Opening_Selector
                     }
                 }
 
-                switch (Globals.AppConfiguration.Configuration.DefaultMethod)
+                switch (Globals.AppConfiguration.Configuration.DefaultSettings.Method)
                 {
                     case UrlPatternMethod.Inquire:
                         ShowDialog(uri, false);
                         break;
                     case UrlPatternMethod.Open:
-                        if (string.IsNullOrEmpty(Globals.AppConfiguration.Configuration.DefaultBrowser)) break;
-                        Util.UrlStartWith(uri,
-                            Globals.AppConfiguration.Configuration.Browsers.First(b =>
-                                b.Name == Globals.AppConfiguration.Configuration.DefaultBrowser).Path
-                        );
+                        Util.UrlStartWith(uri, Globals.AppConfiguration.Configuration.DefaultSettings);
                         break;
                     case UrlPatternMethod.None:
                         break;
