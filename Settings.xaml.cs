@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using URL_Opening_Selector.SettingsPages;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,11 +37,14 @@ namespace URL_Opening_Selector
                 Pattern = "常规设置",
                 Icon = "\uE713"
             };
+            Debug.WriteLine(Globals.AppConfiguration.Configuration.DefaultSettings);
             var defaultPattern = new PatternSettingItem
             {
                 Pattern = "默认规则",
-                Browser = Globals.AppConfiguration.Configuration.DefaultBrowser,
-                Method = Globals.AppConfiguration.Configuration.DefaultMethod,
+                Browser = Globals.AppConfiguration.Configuration.DefaultSettings.Browser,
+                Method = Globals.AppConfiguration.Configuration.DefaultSettings.Method,
+                Advanced = Globals.AppConfiguration.Configuration.DefaultSettings.Advanced,
+                StartArguments = Globals.AppConfiguration.Configuration.DefaultSettings.StartArguments,
                 Icon = "\uE7C4"
             };
             Items.Add(setting);
@@ -84,7 +88,7 @@ namespace URL_Opening_Selector
 
         private async void AddButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(Globals.AppConfiguration.Configuration.DefaultBrowser))
+            if (string.IsNullOrEmpty(Globals.AppConfiguration.Configuration.DefaultSettings.Browser))
             {
                 var dialog = new ContentDialog
                 {
@@ -157,11 +161,11 @@ namespace URL_Opening_Selector
                 }
 
                 await Globals.AppConfiguration.AddUrlPattern(textBox.Text,
-                    Globals.AppConfiguration.Configuration.DefaultBrowser, UrlPatternMethod.Inquire);
+                    Globals.AppConfiguration.Configuration.DefaultSettings.Browser, UrlPatternMethod.Inquire);
                 Items.Add(new PatternSettingItem
                 {
                     Pattern = textBox.Text,
-                    Browser = Globals.AppConfiguration.Configuration.DefaultBrowser,
+                    Browser = Globals.AppConfiguration.Configuration.DefaultSettings.Browser,
                     Method = UrlPatternMethod.Inquire,
                     Icon = "\uE71B"
                 });

@@ -12,22 +12,44 @@
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
-    <StackPanel Spacing="4">
-        <controls:SettingsCard Header="默认浏览器"
-                               Description="打开此链接时使用的浏览器"
-                               HeaderIcon="{ui:FontIcon Glyph=&#xF6FA;}">
-            <ComboBox x:Name="ComboBox1"
-                      SelectionChanged="Selector_OnSelectionChanged" />
-        </controls:SettingsCard>
-        <controls:SettingsCard Header="处理方式"
-                               Description="当链接被打开时处理的方式"
-                               HeaderIcon="{ui:FontIcon Glyph=&#xE7AC;}">
-            <ComboBox x:Name="ComboBox2"
-                      SelectionChanged="ComboBox2_OnSelectionChanged">
-                <TextBlock Text="弹窗询问" Tag="Inquire" />
-                <TextBlock Text="直接启动" Tag="Open" />
-                <TextBlock Text="无所事事" Tag="None" />
-            </ComboBox>
-        </controls:SettingsCard>
+    <StackPanel Spacing="16">
+        <StackPanel Spacing="4">
+            <TextBlock Text="基础设置" />
+            <controls:SettingsCard Header="默认浏览器"
+                                   Description="打开此链接时使用的浏览器"
+                                   HeaderIcon="{ui:FontIcon Glyph=&#xF6FA;}">
+                <ComboBox x:Name="ComboBox1"
+                          SelectionChanged="Selector_OnSelectionChanged" />
+            </controls:SettingsCard>
+            <controls:SettingsCard Header="处理方式"
+                                   Description="当链接被打开时处理的方式"
+                                   HeaderIcon="{ui:FontIcon Glyph=&#xE7AC;}">
+                <ComboBox x:Name="ComboBox2"
+                          SelectionChanged="ComboBox2_OnSelectionChanged">
+                    <TextBlock Text="弹窗询问" Tag="Inquire" />
+                    <TextBlock Text="直接启动" Tag="Open" />
+                    <TextBlock Text="无所事事" Tag="None" />
+                </ComboBox>
+            </controls:SettingsCard>
+        </StackPanel>
+        <StackPanel Spacing="4">
+            <TextBlock Text="高级设置" />
+            <controls:SettingsExpander Header="自定义启动"
+                                       Description="更改浏览器启动选项"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE90F;}"
+                                       x:Name="SettingsExpander1">
+                <ToggleSwitch x:Name="ToggleSwitch1"
+                              Toggled="ToggleSwitch1_OnToggled" />
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard Header="启动参数"
+                                           Description="启动浏览器的启动参数"
+                                           HeaderIcon="{ui:FontIcon Glyph=&#xE756;}">
+                        <TextBox x:Name="StartArguments"
+                                 PlaceholderText="启动参数"
+                                 LostFocus="StartArguments_OnLostFocus"/>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+        </StackPanel>
     </StackPanel>
 </Page>

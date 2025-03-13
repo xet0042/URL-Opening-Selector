@@ -91,7 +91,7 @@
     <tb:TaskbarIcon
         x:Key="TrayIcon"
         Visibility="Visible"
-        ToolTipText="Application"
+        ToolTipText="URL Opening Selector"
         IconSource="ms-appx:///Assets/StoreLogo.png"
         ContextMenuMode="SecondWindow">
         <tb:TaskbarIcon.ContextFlyout>

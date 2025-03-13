@@ -15,17 +15,26 @@ namespace URL_Opening_Selector
 {
     internal class Util
     {
-        public static void UrlStartWith(string url, string browserPath)
+        public static void UrlStartWith(string url, Pattern urlPattern)
         {
+            var browserPath = Globals.AppConfiguration.Configuration.Browsers
+                .FirstOrDefault(b => b.Name == urlPattern.Browser)?.Path;
+            if (string.IsNullOrEmpty(browserPath))
+                // throw new FileNotFoundException($"The bowser \"{urlPattern.Browser}\" is not exist!");
+                return;
             var file = new FileInfo(browserPath);
             if (!file.Exists)
-                throw new FileNotFoundException($"The bowser \"{browserPath}\" is not exist!");
+                // throw new FileNotFoundException($"The bowser \"{browserPath}\" is not exist!");
+                return;
+            var arguments = $"\"{url}\"";
+            if (urlPattern.Advanced)
+                arguments = urlPattern.StartArguments.Replace("{url}", arguments);
             var process = new Process
             {
                 StartInfo =
                 {
                     FileName = browserPath,
-                    Arguments = $"\"{url}\"",
+                    Arguments = arguments
                 }
             };
             process.Start();
@@ -156,18 +165,26 @@ namespace URL_Opening_Selector
 
     public class Configuration
     {
-        public string DefaultBrowser { set; get; }
-        public UrlPatternMethod DefaultMethod { set; get; }
+        public Pattern DefaultSettings { set; get; } = new();
         public SystemBackdrop SystemBackdrop { set; get; } = SystemBackdrop.Mica;
         public ObservableCollection<Browser> Browsers { get; set; } = [];
-        public ObservableCollection<string> AllowBrowsersName { get; set; } = ["Firefox", "Google Chrome", "Microsoft Edge", "Opera"];
+
+        public ObservableCollection<string> AllowBrowsersName { get; set; } =
+            ["Firefox", "Google Chrome", "Microsoft Edge", "Opera"];
     }
 
-    public class UrlPattern
+    public class Pattern
+    {
+        
+        public string Browser { get; set; }
+        public bool Advanced { get; set; }
+        public UrlPatternMethod Method { get; set; }
+        public string StartArguments { get; set; } = "";
+    }
+
+    public class UrlPattern : Pattern
     {
         public string Pattern { get; set; }
-        public string Browser { get; set; }
-        public UrlPatternMethod Method { get; set; }
     }
 
     public class Browser
@@ -190,11 +207,8 @@ namespace URL_Opening_Selector
         None
     }
 
-    public class PatternSettingItem
+    public class PatternSettingItem : UrlPattern
     {
-        public string Pattern { get; set; }
-        public string Browser { get; set; }
-        public UrlPatternMethod Method { get; set; }
         public string Icon { get; set; }
     }
 
