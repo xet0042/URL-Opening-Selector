@@ -155,7 +155,6 @@ namespace URL_Opening_Selector
 
         public static Window SettingWindow;
         public static H.NotifyIcon.TaskbarIcon TrayIcon { get; set; }
-
         public static LogViewWindow LogViewWindow;
     }
 }

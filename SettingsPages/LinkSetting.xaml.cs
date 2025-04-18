@@ -226,7 +226,6 @@ namespace URL_Opening_Selector.SettingsPages
                 _init--;
                 return;
             }
-
             _item.StartArguments = textBox.Text;
             if (_item.Pattern != "默认规则")
                 await Globals.AppConfiguration.UpdateUrlPattern(_item);

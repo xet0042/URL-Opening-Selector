@@ -1,4 +1,4 @@
-﻿using WinUIEx;
+using WinUIEx;
 using System;
 using System.IO;
 using System.Linq;

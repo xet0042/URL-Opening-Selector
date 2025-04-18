@@ -33,38 +33,31 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="3*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <!-- Pattern -->
-                <ListView Grid.Row="0"
-                          ItemsSource="{x:Bind Items, Mode=OneWay}"
-                          SelectionChanged="ListView1_OnSelectionChanged"
-                          x:Name="ListView1">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:PatternSettingItem">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <FontIcon Grid.Column="0"
-                                          FontSize="14"
-                                          Glyph="{x:Bind Icon}"
-                                          Margin="0,0,4,0"
-                                          VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1"
-                                           Text="{x:Bind Pattern}"
-                                           Margin="4,0,0,0"
-                                           VerticalAlignment="Center" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <!-- Settings And Log -->
-            </Grid>
+            <!-- Pattern -->
+            <ListView Grid.Column="0"
+                      ItemsSource="{x:Bind Items, Mode=OneWay}"
+                      SelectionChanged="ListView1_OnSelectionChanged"
+                      x:Name="ListView1">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:PatternSettingItem">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Grid.Column="0"
+                                      FontSize="14"
+                                      Glyph="{x:Bind Icon}"
+                                      Margin="0,0,4,0"
+                                      VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1"
+                                       Text="{x:Bind Pattern}"
+                                       Margin="4,0,0,0"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <ScrollView Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
