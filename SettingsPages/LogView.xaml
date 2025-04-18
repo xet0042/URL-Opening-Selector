@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Page
+    x:Class="URL_Opening_Selector.SettingsPages.LogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:URL_Opening_Selector.SettingsPages"
+    xmlns:global="using:URL_Opening_Selector"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local:LevelToForeground x:Key="LevelToForeground" />
+        <local:LevelToGlyph x:Key="LevelToGlyph" />
+    </Page.Resources>
+
+    <Grid Margin="36,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <labs:TokenView Grid.Row="0"
+                        SelectionMode="Multiple"
+                        SelectionChanged="TokenView1_OnSelectionChanged"
+                        x:Name="TokenView1">
+            <labs:TokenItem Content="Debug" IsSelected="False" />
+            <labs:TokenItem Content="Info" IsSelected="True" />
+            <labs:TokenItem Content="Warning" IsSelected="True" />
+            <labs:TokenItem Content="Error" IsSelected="True" />
+        </labs:TokenView>
+        <ListView Grid.Row="2"
+                  Padding="0"
+                  SelectionMode="None"
+                  ItemsSource="{x:Bind Logs, Mode=OneWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="global:Log">
+                    <Border Margin="2,4"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Grid.Column="0"
+                                      Margin="8,0"
+                                      FontSize="24"
+                                      Glyph="{x:Bind Level, Mode=OneWay,Converter={StaticResource LevelToGlyph}}"
+                                      Foreground="{x:Bind Level, Mode=OneWay,Converter={StaticResource LevelToForeground}}" />
+                            <StackPanel Grid.Column="1"
+                                        Spacing="4"
+                                        Margin="4,8">
+                                <TextBlock Text="{x:Bind Message}" />
+                                <TextBlock Text="{x:Bind Time}"
+                                           Style="{StaticResource CaptionTextBlockStyle}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

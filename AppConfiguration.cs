@@ -11,7 +11,6 @@ using System.Text.Encodings.Web;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-
 namespace URL_Opening_Selector
 {
     public class AppConfiguration
@@ -22,6 +21,7 @@ namespace URL_Opening_Selector
 
         public AppConfiguration()
         {
+            Logger.Info("Read the config in database");
             try
             {
                 var folder = new DirectoryInfo(ApplicationData.Current.LocalFolder.Path);
@@ -52,12 +52,14 @@ namespace URL_Opening_Selector
             }
             catch (SQLiteException ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
             }
         }
 
         public async Task InitJson()
         {
+            Logger.Info("Init the app config");
             try
             {
                 var folder = ApplicationData.Current.LocalFolder;
@@ -76,12 +78,14 @@ namespace URL_Opening_Selector
             }
             catch (JsonException ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
                 Configuration = new Configuration();
                 await SaveJson();
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
                 Configuration = new Configuration();
             }
@@ -101,6 +105,7 @@ namespace URL_Opening_Selector
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
             }
         }
@@ -138,6 +143,7 @@ namespace URL_Opening_Selector
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
             }
 
@@ -172,6 +178,7 @@ namespace URL_Opening_Selector
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
             }
         }
@@ -195,6 +202,7 @@ namespace URL_Opening_Selector
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 Debug.WriteLine(ex);
             }
         }
@@ -210,7 +218,8 @@ namespace URL_Opening_Selector
         public async Task UpdateUrlPattern(UrlPattern urlPattern)
         {
             await using var command = new SQLiteCommand(
-                "UPDATE UrlPatterns SET Browser = @browser, Methods = @methods, Advanced = @advanced, StartArguments = @startArguments WHERE Pattern = @pattern", _db);
+                "UPDATE UrlPatterns SET Browser = @browser, Methods = @methods, Advanced = @advanced, StartArguments = @startArguments WHERE Pattern = @pattern",
+                _db);
             command.Parameters.AddWithValue("@pattern", urlPattern.Pattern);
             command.Parameters.AddWithValue("@browser", urlPattern.Browser);
             command.Parameters.AddWithValue("@methods", (int)urlPattern.Method);

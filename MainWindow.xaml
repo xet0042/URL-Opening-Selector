@@ -27,13 +27,11 @@
             <!-- Title -->
             <TextBlock Text="选择URL打开方式"></TextBlock>
         </Grid>
-        <Grid Grid.Row="1"
-              Margin="16,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+        <StackPanel Grid.Row="1"
+              Margin="16,8"
+              Spacing="8"
+              VerticalAlignment="Center">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -48,7 +46,7 @@
                          Text="{x:Bind Pattern, Mode=OneWay}"
                          x:Name="TextBox1" />
             </Grid>
-            <Grid Grid.Row="1">
+            <Grid Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -56,14 +54,14 @@
                 <TextBlock Grid.Column="0"
                            Text="打开方式:"
                            Margin="0,0,4,0"
-                           VerticalAlignment="Top" />
+                           VerticalAlignment="Center" />
                 <ComboBox Grid.Column="1"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Center"
                           SelectionChanged="ComboBox1_OnSelectionChanged"
                           x:Name="ComboBox1" />
             </Grid>
-        </Grid>
+        </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

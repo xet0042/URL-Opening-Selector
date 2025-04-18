@@ -34,22 +34,56 @@
         </StackPanel>
         <StackPanel Spacing="4">
             <TextBlock Text="高级设置" />
-            <controls:SettingsExpander Header="自定义启动"
-                                       Description="更改浏览器启动选项"
-                                       HeaderIcon="{ui:FontIcon Glyph=&#xE90F;}"
-                                       x:Name="SettingsExpander1">
-                <ToggleSwitch x:Name="ToggleSwitch1"
-                              Toggled="ToggleSwitch1_OnToggled" />
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard Header="启动参数"
-                                           Description="启动浏览器的启动参数"
-                                           HeaderIcon="{ui:FontIcon Glyph=&#xE756;}">
-                        <TextBox x:Name="StartArguments"
-                                 PlaceholderText="启动参数"
-                                 LostFocus="StartArguments_OnLostFocus"/>
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
+            <StackPanel Spacing="2">
+                <InfoBar IsOpen="False"
+                         Severity="Error"
+                         IsClosable="True"
+                         Message="UWP应用不支持设置自定义启动参数"
+                         x:Name="InfoBar2" />
+                <controls:SettingsExpander Header="自定义启动"
+                                           Description="更改浏览器启动选项"
+                                           HeaderIcon="{ui:FontIcon Glyph=&#xE90F;}"
+                                           x:Name="SettingsExpander1">
+                    <ToggleSwitch x:Name="ToggleSwitch1"
+                                  Toggled="ToggleSwitch1_OnToggled" />
+                    <controls:SettingsExpander.ItemsHeader>
+                        <InfoBar IsOpen="False"
+                                 Title="Info"
+                                 BorderThickness="0"
+                                 CornerRadius="0"
+                                 Message="Some message"
+                                 Severity="Success"
+                                 HorizontalAlignment="Stretch"
+                                 x:Name="InfoBar1" />
+                    </controls:SettingsExpander.ItemsHeader>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="启动参数"
+                                               Description="启动浏览器的启动参数，使用{url}表示链接地址"
+                                               HeaderIcon="{ui:FontIcon Glyph=&#xE756;}">
+                            <StackPanel>
+                                <TextBox x:Name="StartArguments"
+                                         PlaceholderText="启动参数，例如：--new-window {}{url}{}"
+                                         LostFocus="StartArguments_OnLostFocus" />
+                                <ComboBox x:Name="TemplateComboBox"
+                                          Margin="0,8,0,0"
+                                          Header="常用参数模板"
+                                          SelectionChanged="TemplateComboBox_OnSelectionChanged">
+                                    <ComboBoxItem Content="默认 ({url})" Tag="{}{url}" />
+                                    <ComboBoxItem Content="新窗口 (--new-window {url})" Tag="--new-window {url}" />
+                                    <ComboBoxItem Content="隐私模式 (-incognito {url})" Tag="-incognito {url}" />
+                                    <ComboBoxItem Content="应用模式 (--app={url})" Tag="--app={url}" />
+                                </ComboBox>
+                            </StackPanel>
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="测试启动"
+                                               Description="测试当前启动参数效果"
+                                               HeaderIcon="{ui:FontIcon Glyph=&#xE8A7;}">
+                            <Button Content="测试启动"
+                                    Click="TestLaunch_OnClick" />
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>
