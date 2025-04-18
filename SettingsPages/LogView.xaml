@@ -11,29 +11,55 @@
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     mc:Ignorable="d">
 
-    <Grid>
+    <Page.Resources>
+        <local:LevelToForeground x:Key="LevelToForeground" />
+        <local:LevelToGlyph x:Key="LevelToGlyph" />
+    </Page.Resources>
+
+    <Grid Margin="36,16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <labs:TokenView Grid.Row="0"
                         SelectionMode="Multiple"
+                        SelectionChanged="TokenView1_OnSelectionChanged"
                         x:Name="TokenView1">
-            <labs:TokenItem Content="Debug" />
-            <labs:TokenItem Content="Info" />
-            <labs:TokenItem Content="Warning" />
-            <labs:TokenItem Content="Error" />
+            <labs:TokenItem Content="Debug" IsSelected="False" />
+            <labs:TokenItem Content="Info" IsSelected="True" />
+            <labs:TokenItem Content="Warning" IsSelected="True" />
+            <labs:TokenItem Content="Error" IsSelected="True" />
         </labs:TokenView>
-        <ListView Grid.Row="1">
+        <ListView Grid.Row="2"
+                  Padding="0"
+                  SelectionMode="None"
+                  ItemsSource="{x:Bind Logs, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="global:Log">
-                    <Border>
-                        <StackPanel>
-                            <TextBlock Text="{x:Bind Message}" />
-                            <TextBlock Text="{x:Bind Time}"
-                                       Style="{StaticResource CaptionTextBlockStyle}" />
-
-                        </StackPanel>
+                    <Border Margin="2,4"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Grid.Column="0"
+                                      Margin="8,0"
+                                      FontSize="24"
+                                      Glyph="{x:Bind Level, Mode=OneWay,Converter={StaticResource LevelToGlyph}}"
+                                      Foreground="{x:Bind Level, Mode=OneWay,Converter={StaticResource LevelToForeground}}" />
+                            <StackPanel Grid.Column="1"
+                                        Spacing="4"
+                                        Margin="4,8">
+                                <TextBlock Text="{x:Bind Message}" />
+                                <TextBlock Text="{x:Bind Time}"
+                                           Style="{StaticResource CaptionTextBlockStyle}" />
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>

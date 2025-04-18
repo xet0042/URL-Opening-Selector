@@ -68,8 +68,13 @@ namespace URL_Opening_Selector
             if (CheckBox1.IsChecked ?? false)
                 await Globals.AppConfiguration.AddUrlPattern(Pattern, (string)ComboBox1.SelectedItem,
                     UrlPatternMethod.Open);
-            UrlPattern.Browser = (string)ComboBox1.SelectedItem;
-            Util.UrlStartWith(Url, UrlPattern);
+            if (UrlPattern is not null)
+                UrlPattern.Browser = (string)ComboBox1.SelectedItem;
+            
+            Util.UrlStartWith(Url, UrlPattern ?? new UrlPattern 
+            {
+                Browser = (string)ComboBox1.SelectedItem,
+            });
             Close();
         }
 

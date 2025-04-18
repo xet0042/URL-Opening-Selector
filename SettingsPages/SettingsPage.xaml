@@ -19,7 +19,8 @@
         <!--3.窗口材质选择-->
         <StackPanel Spacing="12">
             <StackPanel Spacing="4">
-                <TextBlock Text="应用设置" />
+                <TextBlock Text="应用设置"
+                           Style="{StaticResource BodyStrongTextBlockStyle}" />
                 <controls:SettingsCard Header="背景材质"
                                        Description="窗口的背景材质"
                                        HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
@@ -32,29 +33,51 @@
                     </ComboBox>
                 </controls:SettingsCard>
                 <controls:SettingsCard Header="设置为默认应用"
-                       Description="将程序设置为URL的默认启动应用，使程序可以分发链接"
-                       HeaderIcon="{ui:FontIcon Glyph=&#xE7EF;}"
-                       IsClickEnabled="True"
-                       ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
-                       Click="SettingsCard_OnClick" />
+                                       Description="将程序设置为URL的默认启动应用，使程序可以分发链接"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE7EF;}"
+                                       IsClickEnabled="True"
+                                       ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
+                                       Click="SettingsCard_OnClick" />
+                <controls:SettingsCard Header="打开配置文件所在路径"
+                                       Description="在资源管理器中显示配置文件"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8E5;}"
+                                       IsClickEnabled="True"
+                                       ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
+                                       Click="SettingsCard_Click_1" />
+                <controls:SettingsCard Header="打开日志窗口"
+                                       Description="打开日志窗口"
+                                       IsClickEnabled="True"
+                                       ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
+                                       HeaderIcon="{ui:FontIcon Glyph=&#xE8A5;}"
+                                       Click="SettingsCard2_OnClick"/>
             </StackPanel>
             <StackPanel Spacing="4">
                 <TextBlock Text="浏览器设置"
-                           Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                           Style="{StaticResource BodyStrongTextBlockStyle}" />
                 <controls:SettingsExpander Header="可用的浏览器"
-                                           Description="被扫描到的浏览器"
+                                           Description="{x:Bind FormatBrowserCount(global:Globals.AppConfiguration.Configuration.Browsers.Count), Mode=OneWay}"
                                            HeaderIcon="{ui:FontIcon Glyph=&#xF28B;}"
                                            ItemsSource="{x:Bind global:Globals.AppConfiguration.Configuration.Browsers, Mode=OneWay}">
+                    <controls:SettingsExpander.ItemsHeader>
+                        <ProgressBar Height="4"
+                                     Margin="0,2"
+                                     IsIndeterminate="True"
+                                     Visibility="Collapsed"
+                                     x:Name="ProgressBar1" />
+                    </controls:SettingsExpander.ItemsHeader>
                     <controls:SettingsExpander.ItemTemplate>
                         <DataTemplate x:DataType="global:Browser">
                             <controls:SettingsCard Header="{x:Bind Name}"
-                                                   Description="{x:Bind Path}">
+                                                   Description="{x:Bind Path}"
+                                                   PointerReleased="SettingsCard_PointerReleased"
+                                                   Tag="{x:Bind}">
                                 <Button Tag="{x:Bind}"
                                         Padding="16,8"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         BorderThickness="0"
-                                        Click="Delete1_OnClick">
+                                        Click="Delete1_OnClick"
+                                        ToolTipService.ToolTip="删除这个浏览器">
                                     <Button.Resources>
                                         <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#66D3D3D3" />
                                         <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#33D3D3D3" />
@@ -65,7 +88,8 @@
                         </DataTemplate>
                     </controls:SettingsExpander.ItemTemplate>
                     <Button Content="重新扫描"
-                            Click="ButtonBase_OnClick" />
+                            Click="ButtonBase_OnClick"
+                            x:Name="Button1" />
                 </controls:SettingsExpander>
                 <controls:SettingsExpander Header="被允许的浏览器"
                                            Description="可用被扫描到的浏览器名称"
@@ -78,7 +102,8 @@
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         BorderThickness="0"
-                                        Click="Delete2_OnClick">
+                                        Click="Delete2_OnClick"
+                                        ToolTipService.ToolTip="删除这个浏览器">
                                     <Button.Resources>
                                         <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#66D3D3D3" />
                                         <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#33D3D3D3" />
@@ -89,7 +114,7 @@
                         </DataTemplate>
                     </controls:SettingsExpander.ItemTemplate>
                     <Button Content="添加"
-                            Click="Add_OnClick"/>
+                            Click="Add_OnClick" />
                 </controls:SettingsExpander>
             </StackPanel>
         </StackPanel>

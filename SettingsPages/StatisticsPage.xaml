@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Page
     x:Class="URL_Opening_Selector.SettingsPages.StatisticsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,6 +10,14 @@
     mc:Ignorable="d">
 
     <Grid>
-
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Not implemented"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock Text="This function will coming soon!"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+        </StackPanel>
     </Grid>
 </Page>

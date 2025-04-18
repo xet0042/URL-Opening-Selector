@@ -1,18 +1,17 @@
 ﻿using System;
 using WinUIEx;
 using SQLitePCL;
+using System.IO;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Dispatching;
 using Microsoft.Windows.AppLifecycle;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.ApplicationModel.Activation;
 using AppInstance = Microsoft.Windows.AppLifecycle.AppInstance;
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System.IO;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -50,6 +49,7 @@ namespace URL_Opening_Selector
                 return;
             }
 
+            await Logger.Init();
             await Globals.AppConfiguration.InitJson();
             var exitApplicationCommand = (XamlUICommand)Resources["ExitApplicationCommand"];
             exitApplicationCommand.ExecuteRequested += async (sender, eventArgs) =>
@@ -93,6 +93,7 @@ namespace URL_Opening_Selector
             {
                 var protocolArgs = (args.Data as ProtocolActivatedEventArgs)!;
                 var uri = protocolArgs.Uri.AbsoluteUri;
+                Logger.Info($"Open Uri: {uri}");
                 Debug.WriteLine($"Uri: {uri}");
                 Debug.WriteLine(Globals.AppConfiguration._db?.ToString() ?? "null");
                 var r = await Globals.AppConfiguration.GetUrlPatterns(uri);
@@ -154,5 +155,7 @@ namespace URL_Opening_Selector
 
         public static Window SettingWindow;
         public static H.NotifyIcon.TaskbarIcon TrayIcon { get; set; }
+
+        public static LogViewWindow LogViewWindow;
     }
 }

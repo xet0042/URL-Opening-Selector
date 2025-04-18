@@ -9,8 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:winex="using:WinUIEx"
-    Width="1000"
-    Height="600"
+    Width="1024"
+    Height="648"
     Title="Settings"
     IsMaximizable="False"
     Closed="Settings_OnClosed">
@@ -33,31 +33,38 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <!-- Pattern -->
-            <ListView Grid.Column="0"
-                      ItemsSource="{x:Bind Items, Mode=OneWay}"
-                      SelectionChanged="ListView1_OnSelectionChanged"
-                      x:Name="ListView1">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:PatternSettingItem">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Grid.Column="0"
-                                      FontSize="14"
-                                      Glyph="{x:Bind Icon}"
-                                      Margin="0,0,4,0"
-                                      VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="1"
-                                       Text="{x:Bind Pattern}"
-                                       Margin="4,0,0,0"
-                                       VerticalAlignment="Center" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <!-- Pattern -->
+                <ListView Grid.Row="0"
+                          ItemsSource="{x:Bind Items, Mode=OneWay}"
+                          SelectionChanged="ListView1_OnSelectionChanged"
+                          x:Name="ListView1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:PatternSettingItem">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Grid.Column="0"
+                                          FontSize="14"
+                                          Glyph="{x:Bind Icon}"
+                                          Margin="0,0,4,0"
+                                          VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{x:Bind Pattern}"
+                                           Margin="4,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!-- Settings And Log -->
+            </Grid>
             <ScrollView Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -65,9 +72,10 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!-- Settings -->
-                    <Frame Grid.Column="0" 
+                    <Frame Grid.Column="0"
                            Navigated="Frame1_OnNavigated"
-                           x:Name="Frame1"></Frame>
+                           x:Name="Frame1">
+                    </Frame>
                     <!-- About -->
                     <StackPanel Grid.Column="1"
                                 Spacing="8"
@@ -75,7 +83,10 @@
                         <TextBlock FontWeight="Bold"
                                    Text="关于此应用" />
                         <StackPanel>
-                            <TextBlock Text="URL Opening Selector v0.1" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="URL Opening Selector v" />
+                                <TextBlock Text="{x:Bind AppVersion,Mode=OneWay}" />
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="作者:"
                                            Margin="0,0,8,0" />

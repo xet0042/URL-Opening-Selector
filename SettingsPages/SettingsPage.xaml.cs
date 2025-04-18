@@ -1,12 +1,18 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.System;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Controls;
+using CommunityToolkit.WinUI.Controls;
+using Microsoft.UI.Input;
+using Windows.Storage;
+using System.IO;
+using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -18,7 +24,8 @@ namespace URL_Opening_Selector.SettingsPages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        public event EventHandler SystemBackdropChanged;
+        public string FormatBrowserCount(int count) => $"被扫描到的浏览器 - {count} 个";
+        public static event EventHandler SystemBackdropChanged;
 
         public SettingsPage()
         {
@@ -28,13 +35,31 @@ namespace URL_Opening_Selector.SettingsPages
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
+            Button1.IsEnabled = false;
+            ProgressBar1.IsEnabled = true;
+            ProgressBar1.Visibility = Visibility.Visible;
             Globals.AppConfiguration.Configuration.Browsers.Clear();
-            DispatcherQueue.TryEnqueue(async void () =>
+            Task.Run(async void () =>
             {
-                foreach (var name in Globals.AppConfiguration.Configuration.AllowBrowsersName)
-                foreach (var browser in Util.FindBrowsers2(name))
-                    Globals.AppConfiguration.Configuration.Browsers.Add(browser);
-                await Globals.AppConfiguration.SaveJson();
+                try
+                {
+                    foreach (var name in Globals.AppConfiguration.Configuration.AllowBrowsersName)
+                        Util.FindBrowsers2(name, Globals.AppConfiguration.Configuration.Browsers, DispatcherQueue);
+                    await Globals.AppConfiguration.SaveJson();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex.Message);
+                }
+                finally
+                {
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        Button1.IsEnabled = true;
+                        ProgressBar1.IsEnabled = false;
+                        ProgressBar1.Visibility = Visibility.Collapsed;
+                    });
+                }
             });
         }
 
@@ -122,13 +147,71 @@ namespace URL_Opening_Selector.SettingsPages
             await Globals.AppConfiguration.SaveJson();
         }
 
-        private void SettingsCard_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
         private async void SettingsCard_OnClick(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri("ms-settings:defaultapps"));
+        }
+
+        private void SettingsCard_PointerReleased(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var settingsCard = (sender as SettingsCard)!;
+            // 弹出菜单
+            if (e.Pointer.PointerDeviceType != PointerDeviceType.Mouse) return;
+            var pointerPoint = e.GetCurrentPoint(settingsCard);
+            if (!pointerPoint.Properties.IsRightButtonPressed &&
+                pointerPoint.Properties.PointerUpdateKind != PointerUpdateKind.RightButtonReleased) return;
+            
+            var browser = settingsCard.Tag as Browser;
+            if (browser == null) return;
+            var menu = new MenuFlyout();
+            var menuItem = new MenuFlyoutItem
+            {
+                Text = "打开文件所在位置",
+                IsEnabled = !browser.IsUwp,
+                Icon = new FontIcon
+                {
+                    Glyph = "\uE8DA",
+                },
+            };
+            menuItem.Click += (o, args) =>
+            {
+                var file = new Uri(browser.Path);
+                var folder = file.Segments[0];
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "explorer.exe",
+                        Arguments = $"/select,{file}",
+                        UseShellExecute = true,
+                    }
+                };
+                process.Start();
+            };
+            menu.Items.Add(menuItem);
+            menu.ShowAt(settingsCard, pointerPoint.Position);
+        }
+
+        private void SettingsCard_Click_1(object sender, RoutedEventArgs e)
+        {
+            var file = new Uri(Path.Join(ApplicationData.Current.LocalFolder.Path, "config.json"));
+            var folder = file.Segments[0];
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = $"/select,{file}",
+                    UseShellExecute = true,
+                }
+            };
+            process.Start();
+        }
+
+        private void SettingsCard2_OnClick(object sender, RoutedEventArgs e)
+        {
+            App.LogViewWindow ??= new LogViewWindow();
+            App.LogViewWindow.Activate();
         }
     }
 }

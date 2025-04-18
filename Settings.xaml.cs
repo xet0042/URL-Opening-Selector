@@ -20,6 +20,8 @@ namespace URL_Opening_Selector
     /// </summary>
     public sealed partial class Settings : WindowEx
     {
+        public string AppVersion => Util.GetAppVersion();
+
         public readonly ObservableCollection<PatternSettingItem> Items = [];
         private static readonly string[] SourceArray = ["常规设置", "默认规则"];
 
@@ -71,6 +73,7 @@ namespace URL_Opening_Selector
         private void Settings_OnClosed(object sender, WindowEventArgs args)
         {
             App.SettingWindow = null;
+            SettingsPage.SystemBackdropChanged -= SystemBackdropChanged;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
@@ -180,8 +183,10 @@ namespace URL_Opening_Selector
         
         private void Frame1_OnNavigated(object sender, NavigationEventArgs e)
         {
-            if (e.Content is SettingsPage settingsPage)
-                settingsPage.SystemBackdropChanged += SystemBackdropChanged;
+            if (e.Content is SettingsPage)
+                SettingsPage.SystemBackdropChanged += SystemBackdropChanged;
+            else
+                SettingsPage.SystemBackdropChanged -= SystemBackdropChanged;
         }
     }
 }
